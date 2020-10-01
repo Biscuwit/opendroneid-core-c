@@ -198,7 +198,7 @@ static void drone_adopt_gps_data(ODID_UAS_Data *drone,
 	uint64_t time_in_tenth;
 
 	drone->LocationValid = 1;
-	
+
 	/*
 	*	ALL READOUTS FROM GPSD
 	*/
@@ -441,7 +441,7 @@ int main(int argc, char *argv[])
 {
 	ODID_UAS_Data drone;
 	struct global global;
-	struct gps_data_t gpsdata;
+	//struct gps_data_t gpsdata;
 	struct nl_sock *nl_sock = NULL;
 	int if_index;
 	int ret, errno;
@@ -466,19 +466,19 @@ int main(int argc, char *argv[])
 		goto out;
 	}
 
-	if (gps_open(global.server, global.port, &gpsdata) != 0) {
+	/*if (gps_open(global.server, global.port, &gpsdata) != 0) {
 		fprintf(stderr, "%s: gpsd error: %d, %s\n", argv[0],
 			errno, gps_errstr(errno));
 		goto out;
 	}
 
 	gps_stream(&gpsdata, WATCH_ENABLE | WATCH_JSON, NULL);
-
+*/
 	while (1) {
 		sleep(global.refresh_rate);
 
 		/* read as much as we can using gps_read() */
-#if GPSD_API_MAJOR_VERSION >= 7
+/*#if GPSD_API_MAJOR_VERSION >= 7
 		while ((ret = gps_read(&gpsdata, NULL, 0)) > 0);
 #else
 		while ((ret = gps_read(&gpsdata)) > 0);
@@ -489,12 +489,14 @@ int main(int argc, char *argv[])
 		}
 
 		drone_adopt_gps_data(&drone, &gpsdata);
+		*/
 		drone_set_mock_data(&drone);
 		drone_send_data(&drone, &global, nl_sock, if_index);
 	}
 
-	gps_stream(&gpsdata, WATCH_DISABLE, NULL);
+	/*gps_stream(&gpsdata, WATCH_DISABLE, NULL);
 	gps_close(&gpsdata);
+	*/
 out:
 	nl_socket_free(nl_sock);
 
