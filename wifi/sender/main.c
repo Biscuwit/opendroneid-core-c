@@ -372,6 +372,7 @@ static void drone_test_receive_data(uint8_t *buf, size_t buf_size)
  */
 static void drone_send_data(ODID_UAS_Data *drone, struct global *global, struct nl_sock *nl_sock, int if_index)
 {
+	printf("SENDING DRONE DATA");
 	uint8_t frame_buf[1024];
 	int ret;
 	FILE *fp;
